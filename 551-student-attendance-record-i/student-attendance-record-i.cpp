@@ -11,17 +11,15 @@ public:
                 }
                 
             }
-        }
-        for (char c : s) {
-            if (c == 'L') {
+            if (ch == 'L') {
                 late++;
             
                 if (late >= 3) return false;
                 } else {
                     late = 0;
                 }
-            
         }
+        
         return true;
     }
 };
