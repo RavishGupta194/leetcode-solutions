@@ -6,7 +6,7 @@ public:
         for (int i = 0; i < details.size(); i++) {
             if (details[i].length() > 11) {
                 string sub = details[i].substr(11, 2);
-                num = stoi(sub);
+                int num = (details[i][11] - '0') * 10 + (details[i][12] - '0');
                 if (num > 60) {
                     count++;
                 }
