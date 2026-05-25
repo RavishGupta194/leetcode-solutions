@@ -2,16 +2,31 @@ class Solution {
 public:
     bool check(vector<int>& nums) {
 
-        int count = 0;
+        vector<int> temp = nums;
+
+        // Sort temp array
+        sort(temp.begin(), temp.end());
+
         int n = nums.size();
 
-        for (int i = 0; i < n; i++) {
+        // Try all rotations
+        for (int k = 0; k < n; k++) {
 
-            if (nums[i] > nums[(i + 1) % n]) {
-                count++;
+            // Compare arrays
+            if (nums == temp) {
+                return true;
             }
+
+            // Rotate left by 1
+            int first = nums[0];
+
+            for (int i = 0; i < n - 1; i++) {
+                nums[i] = nums[i + 1];
+            }
+
+            nums[n - 1] = first;
         }
 
-        return count <= 1;
+        return false;
     }
 };
