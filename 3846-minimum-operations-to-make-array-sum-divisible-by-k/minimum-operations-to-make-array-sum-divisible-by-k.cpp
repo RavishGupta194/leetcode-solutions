@@ -8,11 +8,6 @@ public:
         if(sum%k==0){
             return 0;
         }
-        int count=0;
-        while(sum%k!=0){
-            sum=sum-1;
-            count++;
-        }
-        return count;
+        return sum%k;
     }
 };
