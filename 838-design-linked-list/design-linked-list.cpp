@@ -2,156 +2,138 @@ class Node {
 public:
     int data;
     Node* next;
-
-    Node(int val) {
-        data = val;
-        next = NULL;
+    Node(int value) {
+        this->data = value;
+        this->next = NULL;
     }
 };
 class MyLinkedList {
 public:
     Node* head;
     Node* tail;
-
     MyLinkedList() {
         head = NULL;
         tail = NULL;
     }
-    
+
     int get(int index) {
-        if (head == NULL) {
-        return -1;
-    }
-
-    Node* temp = head;
-
-    for (int i = 0; i < index; i++) {
-        if (temp == NULL) {
+        int size = 0;
+        Node* temp = head;
+        while (temp != NULL) {
+            size++;
+            temp = temp->next;
+        }
+        if (index < 0 || index >= size) {
             return -1;
         }
-
-        temp = temp->next;
+        Node* temp2 = head;
+        for (int i = 0; i < index; i++) {
+            temp2 = temp2->next;
+        }
+        return temp2->data;
     }
 
-    if (temp == NULL) {
-        return -1;
-    }
-
-    return temp->data;
-    }
-    
     void addAtHead(int val) {
         Node* newNode = new Node(val);
-        if (head == NULL) {
+        if (head == NULL && tail == NULL) {
             head = newNode;
             tail = newNode;
-        }
-        // List already has nodes
-        else {
+        } else {
             newNode->next = head;
             head = newNode;
         }
     }
-    
+
     void addAtTail(int val) {
         Node* newNode = new Node(val);
+        if (head == NULL && tail == NULL) {
+            head = newNode;
+            tail = newNode;
+        } else {
+            tail->next = newNode;
+            tail = newNode;
+        }
+    }
 
-    // Empty list
-    if (head == NULL) {
-        head = newNode;
-        tail = newNode;
-    }
-    // List already has nodes
-    else {
-        tail->next = newNode;
-        tail = newNode;
-    }
-}
-    
     void addAtIndex(int index, int val) {
+        int size = 0;
+        Node* temp3 = head;
+        while (temp3 != NULL) {
+            size++;
+            temp3 = temp3->next;
+        }
+        if (index < 0 || index > size) {
+            return;
+        }
         if (index == 0) {
-        addAtHead(val);
-        return;
-    }
-
-    // List empty hai
-    if (head == NULL) {
-        return;
-    }
-
-    Node* temp = head;
-
-    // index - 1 tak jaana hai
-    for (int i = 0; i < index - 1; i++) {
-        if (temp == NULL) {
+            addAtHead(val);
             return;
         }
 
-        temp = temp->next;
+        if (index == size) {
+            addAtTail(val);
+            return;
+        }
+
+        Node* newNode = new Node(val);
+
+        Node* temp4 = head;
+
+        for (int i = 0; i < index - 1; i++) {
+            temp4 = temp4->next;
+        }
+
+        newNode->next = temp4->next;
+        temp4->next = newNode;
     }
 
-    // Agar position exist nahi karti
-    if (temp == NULL) {
-        return;
-    }
-
-    Node* newNode = new Node(val);
-
-    newNode->next = temp->next;
-    temp->next = newNode;
-
-    // Agar last mein insert hua
-    if (newNode->next == NULL) {
-        tail = newNode;
-    }
-    }
-    
     void deleteAtIndex(int index) {
-        if (head == NULL) {
-        return;
-    }
-
-    // Head delete karna hai
-    if (index == 0) {
-        Node* temp = head;
-        head = head->next;
-        delete temp;
-
-        // Agar list empty ho gayi
-        if (head == NULL) {
-            tail = NULL;
+        int size = 0;
+        Node* temp3 = head;
+        while (temp3 != NULL) {
+            size++;
+            temp3 = temp3->next;
         }
-
-        return;
-    }
-
-    Node* temp = head;
-
-    // index - 1 wale node tak jao
-    for (int i = 0; i < index - 1; i++) {
-        if (temp == NULL || temp->next == NULL) {
+        if (index < 0 || index >= size) {
             return;
         }
 
-        temp = temp->next;
-    }
+        if (index == 0) {
 
-    // Delete karne ke liye node exist nahi karti
-    if (temp->next == NULL) {
-        return;
-    }
+            Node* temp = head;
 
-    Node* nodeToDelete = temp->next;
+            head = head->next;
 
-    // Link skip kar do
-    temp->next = nodeToDelete->next;
+            temp->next = NULL;
 
-    // Agar last node delete hui
-    if (nodeToDelete == tail) {
-        tail = temp;
-    }
+            delete temp;
 
-    delete nodeToDelete;
+            size--;
+
+            if (size == 0) {
+                tail = NULL;
+            }
+
+            return;
+        }
+
+        Node* previous = head;
+
+        for (int i = 0; i < index - 1; i++) {
+            previous = previous->next;
+        }
+
+        Node* current = previous->next;
+
+        if (current == tail) {
+            tail = previous;
+        }
+
+        previous->next = current->next;
+
+        current->next = NULL;
+
+        delete current;
     }
 };
 
